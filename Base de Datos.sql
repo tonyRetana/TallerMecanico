@@ -302,3 +302,38 @@ BEGIN
 	SELECT @MSJ
 END;
 GO
+
+GO
+
+CREATE PROCEDURE InsertarServicioProducto
+    @CODIGOBARRA INT,
+    @NOMBRE VARCHAR(30),
+    @PRECIO FLOAT,
+    @TIPO VARCHAR(8),
+    @FABRICANTE VARCHAR(30),
+    @DESCRIPCION VARCHAR(MAX),
+    @MSJ VARCHAR(MAX) OUTPUT
+AS
+BEGIN
+    BEGIN TRY
+        -- Verificar si ya existe el código de barras
+        IF EXISTS (SELECT 1 FROM SERVICIO_PRODUCTO WHERE CODIGOBARRA = @CODIGOBARRA)
+        BEGIN
+            SET @MSJ = 'Imposible de insertar, el código de barras ya existe.';
+        END;
+		ELSE
+		BEGIN
+			-- Insertar en la tabla SERVICIO_PRODUCTO
+			INSERT INTO SERVICIO_PRODUCTO (CODIGOBARRA, NOMBRE, PRECIO, TIPO, FABRICANTE, DESCRIPCION)
+			VALUES (@CODIGOBARRA, @NOMBRE, @PRECIO, @TIPO, @FABRICANTE, @DESCRIPCION);
+			SET @MSJ = 'Inserción exitosa.';
+		END
+        
+    END TRY
+    BEGIN CATCH
+        -- Manejo de errores: asignar un mensaje de error a la variable @MSJ
+        SET @MSJ = 'Error al intentar insertar el servicio o producto.';
+    END CATCH;
+	SELECT @MSJ
+END;
+GO
