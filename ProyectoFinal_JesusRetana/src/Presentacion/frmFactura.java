@@ -607,8 +607,6 @@ public class frmFactura extends javax.swing.JInternalFrame {
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this, e.getMessage());
         }
-        
-        
     }//GEN-LAST:event_btnVendedorActionPerformed
 
     private void btnClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnClienteActionPerformed
@@ -717,7 +715,9 @@ public class frmFactura extends javax.swing.JInternalFrame {
                     totalFinal+=Double.parseDouble(tblListaFactura.getValueAt(i, 3).toString());
                 }
             }
-            lista=lista+"\n=============================================\nTotal: "+Double.toString(totalFinal);
+            lista=lista+"\n=============================================\nTotal SIN IVA: "+Double.toString(totalFinal);
+            totalFinal=totalFinal+(totalFinal*0.13);
+            lista=lista+"\nTotal : "+Double.toString(totalFinal);
             LogicaVenta logica = new LogicaVenta();
             Ventas venta = new Ventas();
             venta.setNumeroFactura(Integer.parseInt(txtNumFactura.getText()));
