@@ -76,14 +76,14 @@ public class frmClientes extends javax.swing.JInternalFrame {
             cliente.setNombre(txtNombre.getText());
             cliente.setPrimerApellido(txtApellido1.getText());
             cliente.setSegundoApellido(txtApellido2.getText());
-            cliente.setCorreoElectronico(txtContrasena.getText());
+            cliente.setCorreoElectronico(txtCorreo.getText());
             cliente.setTelefono(txtTelefono.getText());
             cliente.setContrasena(txtContrasena.getText());
             
             resultado = logica.InsertarCliente(cliente);
-            JOptionPane.showMessageDialog(this, logica.getMensaje());
+            JOptionPane.showMessageDialog(this, logica.getMensaje()+"\n"+cliente.MostrarPersona());
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(this, e.getMessage());
+            JOptionPane.showMessageDialog(this, "Agregue todos los datos correctamente");
         }
     }
     public void ActualizarCliente(){

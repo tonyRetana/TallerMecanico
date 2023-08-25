@@ -8,6 +8,7 @@ import AccesoDatos.ADProducto;
 import AccesoDatos.ADVendedores;
 import Entidades.EntidadServiciosProductos;
 import Entidades.EntidadVendedor;
+import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -56,5 +57,17 @@ public class LogicaServiPro {
             throw e;
         }
         return arreglo;
+    }
+    
+    public ResultSet ListarServiProCant(String condicion)throws Exception{
+        ResultSet rs;
+        ADProducto adDPR;
+        try {
+            adDPR = new ADProducto();
+            rs = adDPR.ListarServiProCant(condicion);
+        } catch (Exception e) {
+            throw e;
+        }
+        return rs;
     }
 }

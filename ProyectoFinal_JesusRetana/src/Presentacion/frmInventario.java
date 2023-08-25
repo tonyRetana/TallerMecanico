@@ -9,9 +9,11 @@ import Entidades.EntidadInventario;
 import Entidades.EntidadServiciosProductos;
 import Entidades.EntidadVendedor;
 import Logica.LogicaCompra;
+import Logica.LogicaDetalle;
 import Logica.LogicaInventario;
 import Logica.LogicaServiPro;
 import Logica.LogicaVendedor;
+import java.sql.ResultSet;
 import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
@@ -48,15 +50,17 @@ public class frmInventario extends javax.swing.JInternalFrame {
     public void cargarServipro(String condicion)throws Exception{
         try {
             LogicaServiPro logica = new LogicaServiPro();
-            List<EntidadServiciosProductos> arreglo;
+            ResultSet lista;
             LimpiarTabla();
-            Object[] fila = new Object[4];
-            arreglo= logica.ListarServiPro(condicion);
-            for(EntidadServiciosProductos pro : arreglo){
-                fila[0] = pro.getCodigoBarras();
-                fila[1] = pro.getNombre();
-                fila[2] = pro.getPrecio();
-                fila[3] = pro.getDescripcion();
+            Object[] fila = new Object[5];
+            lista= logica.ListarServiProCant(condicion);
+            
+            while (lista.next()) {                
+                fila[0] = lista.getInt("CODIGOBARRA");
+                fila[1] = lista.getString("NOMBRE");
+                fila[2] = lista.getDouble("PRECIO");
+                fila[3] = lista.getString("Descripcion");
+                fila[4] = lista.getInt("CANTIDAD");
                 modelo.addRow(fila);
             }
         } catch (Exception e) {
@@ -73,6 +77,7 @@ public class frmInventario extends javax.swing.JInternalFrame {
         modelo.addColumn("Nombre");
         modelo.addColumn("Precio");
         modelo.addColumn("Descripcion");
+        modelo.addColumn("Cantidad");
     }
     
     public void InsertarProductoServicio()throws Exception{

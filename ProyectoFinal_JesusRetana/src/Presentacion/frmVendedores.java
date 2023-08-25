@@ -64,8 +64,9 @@ public class frmVendedores extends javax.swing.JInternalFrame {
             vendedor.setCorreoElectronico(txtCorreo.getText());
             
             int resultado = logica.InsertarVendedor(vendedor);
-            JOptionPane.showMessageDialog(this, logica.getMensaje());
+            JOptionPane.showMessageDialog(this, logica.getMensaje()+"\n"+vendedor.MostrarPersona());
         } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Llene todos los datos correctamente");
         }
     }
     public void LimpiarTabla(){
@@ -97,7 +98,7 @@ public class frmVendedores extends javax.swing.JInternalFrame {
             int resultado = logica.ActualizarVendedor(vendedor);
             JOptionPane.showMessageDialog(this, logica.getMensaje());
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(this, e.getMessage());
+            JOptionPane.showMessageDialog(this, "Llene todos los campos solicitados");
         }
     }
     public void BorrarVendedor(){

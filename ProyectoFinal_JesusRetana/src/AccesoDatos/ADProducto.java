@@ -103,4 +103,22 @@ public class ADProducto {
         }
         return arreglo;
     }
+    public ResultSet ListarServiProCant(String condicion)throws SQLException{
+        ResultSet rs = null;
+        try {
+            Statement stm = _cnn.createStatement();
+            String sentencia = "Select i.CODIGOBARRA,NOMBRE,PRECIO,DESCRIPCION,CANTIDAD from SERVICIO_PRODUCTO sp inner join INVENTARIO i  on sp.CODIGOBARRA = i.CODIGOBARRA";
+            if(!condicion.equals("")){
+                sentencia = String.format("%S where %S", sentencia,condicion);
+            }
+            rs = stm.executeQuery(sentencia);
+            
+        } catch (Exception e) {
+            throw e;
+        }
+        finally{
+            _cnn = null;
+        }
+        return rs;
+    }
 }

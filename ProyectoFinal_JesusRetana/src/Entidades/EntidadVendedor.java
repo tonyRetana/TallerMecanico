@@ -45,7 +45,7 @@ public class EntidadVendedor extends EntidadPersona{
     @Override
     public String MostrarPersona(){
         if(isActivo()){
-            return "Empleado Activo\nNombre: "+getNombre()+" Apellidos: "+getPrimerApellido()+" "+getSegundoApellido()+" Contacto: "+getTelefono();
+            return "Empleado Activo\nNombre: "+getNombre()+" Apellidos: "+getPrimerApellido()+" "+getSegundoApellido()+" Contacto: "+getTelefono() + " | "+getCorreoElectronico();
         }
         else{
             return "Empleado No Activo\nNombre: "+getNombre()+" Apellidos: "+getPrimerApellido()+" "+getSegundoApellido()+" Contacto: "+getTelefono();
