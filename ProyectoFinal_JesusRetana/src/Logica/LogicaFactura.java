@@ -6,6 +6,7 @@ package Logica;
 
 import AccesoDatos.*;
 import Entidades.*;
+import java.sql.ResultSet;
 
 /**
  *
@@ -48,5 +49,15 @@ public class LogicaFactura {
             throw e;
         }
         return resultado;
+    }
+    public ResultSet ListarFactura(String condicion)throws Exception{
+        ResultSet rs =null;
+        try {
+            ADFactura adFac = new ADFactura();
+            rs= adFac.ListarFactura(condicion);
+        } catch (Exception e) {
+            throw e;
+        }
+        return rs;
     }
 }

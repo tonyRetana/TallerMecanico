@@ -12,6 +12,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.sql.Types;
 
 /**
@@ -70,7 +71,22 @@ public class ADFactura {
         }
         return resultado;
     }
-    
+    public ResultSet ListarFactura(String condicion)throws SQLException{
+        ResultSet rs=null;
+        try {
+            Statement stm = _cnn.createStatement();
+            String sentencia = "select NUMFACTURA,RESUMEN,FECHAHORA,TOTAL from FACTURA";
+            
+            sentencia = String.format("%s %s", sentencia,condicion);
+            rs = stm.executeQuery(sentencia);
+        } catch (Exception e) {
+            throw e;
+        }
+        finally{
+            _cnn = null;
+        }
+        return rs;
+    }
     public int ActualizarFactura(EntidadFactura factura)throws SQLException{
         int resultado =-1;
         ResultSet rs = null;
