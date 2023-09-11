@@ -471,3 +471,67 @@ BEGIN
 	SELECT @MSJ
 END;
 GO
+CREATE or ALTER PROCEDURE EliminarFactura
+    @NumeroFactura INT,
+    @Mensaje VARCHAR(MAX) OUTPUT
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    DECLARE @CodigoBarras INT;
+    DECLARE @Cantidad INT;
+
+    BEGIN TRY
+        -- Iniciar una transacción
+        BEGIN TRANSACTION;
+
+        -- Recorrer los detalles de factura uno por uno
+        DECLARE detalle_cursor CURSOR FOR
+        SELECT CODIGOBARRA, CANTIDAD
+        FROM DETALLE_FACTURA
+        WHERE NUMFACTURA = @NumeroFactura;
+
+        OPEN detalle_cursor;
+
+        FETCH NEXT FROM detalle_cursor INTO @CodigoBarras, @Cantidad;
+
+        WHILE @@FETCH_STATUS = 0
+        BEGIN
+            -- Sumar la cantidad al inventario
+            UPDATE INVENTARIO
+            SET CANTIDAD = CANTIDAD + @Cantidad
+            WHERE CODIGOBARRA = @CodigoBarras;
+
+            -- Borrar el detalle de factura
+            -- Borrar el detalle de factura
+			DELETE FROM DETALLE_FACTURA
+			WHERE CODIGOBARRA = @CodigoBarras AND NUMFACTURA = @NumeroFactura;
+
+            FETCH NEXT FROM detalle_cursor INTO @CodigoBarras, @Cantidad;
+        END;
+
+        -- Eliminar la factura
+        DELETE FROM FACTURA
+        WHERE NUMFACTURA = @NumeroFactura;
+
+        -- Commit de la transacción si todo ha sido exitoso
+        COMMIT;
+
+        -- Establecer el mensaje de éxito
+        SET @Mensaje = 'La factura ' + CAST(@NumeroFactura AS VARCHAR) + ' ha sido eliminada exitosamente y el inventario ha sido actualizado.';
+    END TRY
+    BEGIN CATCH
+        -- En caso de error, hacer un rollback de la transacción
+        ROLLBACK;
+
+        -- Establecer el mensaje de error
+        SET @Mensaje = 'Error al eliminar la factura: ' + ERROR_MESSAGE();
+    END CATCH;
+
+    CLOSE detalle_cursor;
+    DEALLOCATE detalle_cursor;
+END;
+
+
+Select * from FACTURA
+Select * from DETALLE_FACTURA
